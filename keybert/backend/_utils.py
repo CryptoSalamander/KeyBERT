@@ -34,6 +34,11 @@ def select_backend(embedding_model) -> BaseEmbedder:
         from keybert.backend._use import USEBackend
         return USEBackend(embedding_model)
 
+    # Create a huggingface Model based on a path string
+    if isinstance(embedding_model, str) and isdir(embedding_model):
+        from ._huggingface import HuggingfaceBackend
+        return HuggingfaceBackend(embedding_model)
+
     # Sentence Transformer embeddings
     if "sentence_transformers" in str(type(embedding_model)):
         return SentenceTransformerBackend(embedding_model)
